@@ -1468,6 +1468,11 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@savvywombat/tailwindcss-grid-areas@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@savvywombat/tailwindcss-grid-areas/-/tailwindcss-grid-areas-1.2.0.tgz#660b5428d8c9408c3bff638b6a5fe54109e4a095"
+  integrity sha512-fKS82l8yeMrP4uL6ij/ysyQ+ZSj7EduDInIljABf2oy9SzdfpzNBv0Jq/n29wEWTEHNjYziDqf4UV8kgTgehtg==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.2.tgz#858f5c4b48d80778fde4b9d541f27edc0d56488b"
