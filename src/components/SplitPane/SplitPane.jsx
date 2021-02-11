@@ -1,36 +1,52 @@
-import { useState, createContext, useRef, useContext, useEffect } from 'react'
+import {
+  useState,
+  createContext,
+  useRef,
+  useContext,
+  useEffect,
+  useCallback
+} from 'react'
+import clamp from '../../utils/clamp'
 
 const splitPaneContext = createContext()
 
-export default function SplitPane ({ children, className, ...props }) {
+export default function SplitPane ({
+  children,
+  className,
+  min = 1,
+  max = 500,
+  ...props
+}) {
   const [leftWidth, setLeftWidth] = useState(null)
   const separatorXPosition = useRef()
   const splitPaneRef = useRef()
 
-  const onMouseDown = e => {
+  const onMouseDown = useCallback(e => {
     separatorXPosition.current = e.clientX
-  }
+  }, [])
 
-  const onMouseMove = e => {
-    if (!separatorXPosition.current) return
+  const onMouseMove = useCallback(
+    e => {
+      if (!separatorXPosition.current) return
 
-    const newLeftWidth = e.clientX - separatorXPosition.current + leftWidth
-    separatorXPosition.current = e.clientX
+      const newLeftWidth = e.clientX - separatorXPosition.current + leftWidth
+      separatorXPosition.current = e.clientX
 
-    if (newLeftWidth < 1) {
-      return setLeftWidth(1)
+      setLeftWidth(clamp(newLeftWidth, min, max))
+    },
+    [leftWidth, min, max]
+  )
+
+  const onMouseUp = useCallback(() => (separatorXPosition.current = null), [])
+
+  useEffect(() => {
+    if (leftWidth) return
+
+    const width = localStorage.getItem('podify-nav-width')
+    if (width) {
+      setLeftWidth(width)
     }
-
-    const splitPaneWidth = splitPaneRef.current.clientWidth
-    console.log(newLeftWidth, splitPaneWidth)
-    // if (newTopHeight > splitPaneHeight) {
-    //   return setTopHeight(splitPaneHeight)
-    // }
-
-    setLeftWidth(newLeftWidth)
-  }
-
-  const onMouseUp = () => (separatorXPosition.current = null)
+  }, [leftWidth])
 
   useEffect(() => {
     document.addEventListener('mouseup', onMouseUp)
@@ -40,14 +56,18 @@ export default function SplitPane ({ children, className, ...props }) {
       document.removeEventListener('mouseup', onMouseUp)
       document.removeEventListener('mousemove', onMouseMove)
     }
-  })
+  }, [onMouseMove, onMouseUp])
+
+  useEffect(() => {
+    localStorage.setItem('podify-nav-width', leftWidth)
+  }, [leftWidth])
 
   return (
     <div {...props} className={`flex ${className ?? ''}`} ref={splitPaneRef}>
       <splitPaneContext.Provider value={{ leftWidth, setLeftWidth }}>
         {children[0]}
         <div
-          className='-my-2 border-4 border-black cursor-move'
+          className='w-2 transition-colors bg-black border-4 border-black hover:bg-gray-100 cursor-col-resize'
           onMouseDown={onMouseDown}
         />
         {children[1]}
