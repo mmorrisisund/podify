@@ -1,5 +1,4 @@
 import {
-  useState,
   createContext,
   useRef,
   useContext,
@@ -7,6 +6,7 @@ import {
   useCallback
 } from 'react'
 import clamp from '../../utils/clamp'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 const splitPaneContext = createContext()
 
@@ -17,7 +17,7 @@ export default function SplitPane ({
   max = 500,
   ...props
 }) {
-  const [leftWidth, setLeftWidth] = useState(null)
+  const [leftWidth, setLeftWidth] = useLocalStorage('podify-nav-width', null)
   const separatorXPosition = useRef()
   const splitPaneRef = useRef()
 
@@ -29,24 +29,24 @@ export default function SplitPane ({
     e => {
       if (!separatorXPosition.current) return
 
+      if (document.selection) {
+        document.selection.empty()
+      } else {
+        try {
+          window.getSelection().removeAllRanges()
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
+      }
+
       const newLeftWidth = e.clientX - separatorXPosition.current + leftWidth
       separatorXPosition.current = e.clientX
 
       setLeftWidth(clamp(newLeftWidth, min, max))
     },
-    [leftWidth, min, max]
+    [setLeftWidth, leftWidth, min, max]
   )
 
   const onMouseUp = useCallback(() => (separatorXPosition.current = null), [])
-
-  useEffect(() => {
-    if (leftWidth) return
-
-    const width = localStorage.getItem('podify-nav-width')
-    if (width) {
-      setLeftWidth(width)
-    }
-  }, [leftWidth])
 
   useEffect(() => {
     document.addEventListener('mouseup', onMouseUp)
@@ -57,10 +57,6 @@ export default function SplitPane ({
       document.removeEventListener('mousemove', onMouseMove)
     }
   }, [onMouseMove, onMouseUp])
-
-  useEffect(() => {
-    localStorage.setItem('podify-nav-width', leftWidth)
-  }, [leftWidth])
 
   return (
     <div {...props} className={`flex ${className ?? ''}`} ref={splitPaneRef}>
@@ -92,9 +88,7 @@ SplitPane.Left = function SplitPaneLeft ({ children, className, ...props }) {
   return (
     <div
       {...props}
-      className={`overflow-hidden ${
-        leftWidth ? 'flex-none' : 'flex-1'
-      } ${className ?? ''}`}
+      className={`${leftWidth ? 'flex-none' : 'flex-1'} ${className ?? ''}`}
       ref={leftRef}
     >
       {children}
@@ -104,7 +98,7 @@ SplitPane.Left = function SplitPaneLeft ({ children, className, ...props }) {
 
 SplitPane.Right = function SplitPaneRight ({ children, className, ...props }) {
   return (
-    <div {...props} className={`flex-1 overflow-hidden ${className ?? ''}`}>
+    <div {...props} className={`flex-1 ${className ?? ''}`}>
       {children}
     </div>
   )
