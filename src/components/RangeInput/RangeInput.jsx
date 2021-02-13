@@ -9,15 +9,13 @@ export const RangeInput = ({
   onInput,
   className
 }) => {
-  const [val, setVal] = useState(0)
   const [offset, setOffset] = useState(0)
 
   useEffect(() => {
-    setOffset(Number(((value ?? val - min) * 100) / (max - min)))
-  }, [value, val, min, max])
+    setOffset(Number(((value - min) * 100) / (max - min)))
+  }, [value, min, max])
 
   const handleOnInput = e => {
-    setVal(e.target.value)
     onInput?.(Number(e.target.value))
   }
 
@@ -31,7 +29,7 @@ export const RangeInput = ({
             min={min}
             max={max}
             step={step}
-            value={value ?? val}
+            value={value}
             onInput={handleOnInput}
           />
         </div>
@@ -39,7 +37,7 @@ export const RangeInput = ({
           style={{ left: `calc(${offset}% - ${12 * (offset / 100)}px)` }} // 12 = 1/2 browser thumb + 1/2 custom thumb
           className='absolute grid w-3 h-3 text-transparent transform -translate-y-1/2 bg-gray-400 rounded-full pointer-events-none select-none group-hover:w-5 group-hover:h-5 group-hover:bg-gray-100 group-hover:-translate-y-1/2 group-hover:scale-150 group-hover:text-black bubble top-1/2 place-items-center '
         >
-          {displayValue ? val : ''}
+          {displayValue ? value : ''}
         </output>
       </div>
     </div>
