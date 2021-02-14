@@ -8,7 +8,8 @@ module.exports = {
         'col-resize': 'col-resize'
       },
       colors: {
-        'true-gray': colors.trueGray
+        'true-gray': colors.trueGray,
+        'soft-black': '#070707'
       }
     }
   },
