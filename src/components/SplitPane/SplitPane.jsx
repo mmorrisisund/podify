@@ -1,52 +1,58 @@
-import {
-  createContext,
-  useRef,
-  useContext,
-  useEffect,
-  useCallback
-} from 'react'
-import clamp from '../../utils/clamp'
+import { useState, useRef, forwardRef, useEffect, useCallback } from 'react'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
-const splitPaneContext = createContext()
+function unfocus (document, window) {
+  if (document.selection) {
+    document.selection.empty()
+  } else {
+    try {
+      window.getSelection().removeAllRanges()
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  }
+}
 
 export default function SplitPane ({
   children,
   className,
   min = 1,
-  max = 500,
+  max = Number.POSITIVE_INFINITY,
   ...props
 }) {
-  const [leftWidth, setLeftWidth] = useLocalStorage('podify-nav-width', null)
-  const separatorXPosition = useRef()
+  const [size, setSize] = useLocalStorage('podify-nav-width', null)
+  const [position, setPosition] = useState(undefined)
   const splitPaneRef = useRef()
+  const leftPaneRef = useRef()
 
   const onMouseDown = useCallback(e => {
-    separatorXPosition.current = e.clientX
+    setPosition(e.clientX)
+    unfocus(document, window)
   }, [])
 
   const onMouseMove = useCallback(
     e => {
-      if (!separatorXPosition.current) return
+      if (!position) return
 
-      if (document.selection) {
-        document.selection.empty()
-      } else {
-        try {
-          window.getSelection().removeAllRanges()
-          // eslint-disable-next-line no-empty
-        } catch (e) {}
+      unfocus(document, window)
+
+      if (leftPaneRef.current?.getBoundingClientRect) {
+        const size = leftPaneRef.current.getBoundingClientRect().width
+        const current = e.clientX
+        const positionDelta = position - current
+        const sizeDelta = positionDelta
+        let newSize = size - sizeDelta
+        const newPosition = position - positionDelta
+
+        if (newSize > min && newSize < max) {
+          setPosition(newPosition)
+          setSize(newSize)
+        }
       }
-
-      const newLeftWidth = e.clientX - separatorXPosition.current + leftWidth
-      separatorXPosition.current = e.clientX
-
-      setLeftWidth(clamp(newLeftWidth, min, max))
     },
-    [setLeftWidth, leftWidth, min, max]
+    [setSize, min, max, position]
   )
 
-  const onMouseUp = useCallback(() => (separatorXPosition.current = null), [])
+  const onMouseUp = useCallback(() => setPosition(undefined), [])
 
   useEffect(() => {
     document.addEventListener('mouseup', onMouseUp)
@@ -60,46 +66,32 @@ export default function SplitPane ({
 
   return (
     <div {...props} className={`flex ${className ?? ''}`} ref={splitPaneRef}>
-      <splitPaneContext.Provider value={{ leftWidth, setLeftWidth }}>
+      <Pane ref={leftPaneRef} size={size}>
         {children[0]}
-        <div
-          className='w-2 transition-colors bg-black border-4 border-black hover:bg-gray-100 cursor-col-resize'
-          onMouseDown={onMouseDown}
-        />
-        {children[1]}
-      </splitPaneContext.Provider>
+      </Pane>
+      <Resizer onMouseDown={onMouseDown} />
+      <Pane>{children[1]}</Pane>
     </div>
   )
 }
 
-SplitPane.Left = function SplitPaneLeft ({ children, className, ...props }) {
-  const { leftWidth, setLeftWidth } = useContext(splitPaneContext)
-  const leftRef = useRef()
-
-  useEffect(() => {
-    if (!leftWidth) {
-      setLeftWidth(leftRef.current.clientHeight)
-      return
-    }
-
-    leftRef.current.style.width = `${leftWidth}px`
-  }, [leftWidth, setLeftWidth])
-
+const Pane = forwardRef(({ size, children }, ref) => {
   return (
     <div
-      {...props}
-      className={`${leftWidth ? 'flex-none' : 'flex-1'} ${className ?? ''}`}
-      ref={leftRef}
+      ref={ref}
+      className={`${size ? 'flex-none' : 'flex-1'} relative outline-none`}
+      style={{ width: size }}
     >
       {children}
     </div>
   )
-}
+})
 
-SplitPane.Right = function SplitPaneRight ({ children, className, ...props }) {
+const Resizer = ({ onMouseDown }) => {
   return (
-    <div {...props} className={`flex-1 ${className ?? ''}`}>
-      {children}
-    </div>
+    <span
+      className='w-2 transition-colors bg-black border-4 border-black hover:bg-gray-100 cursor-col-resize'
+      onMouseDown={onMouseDown}
+    />
   )
 }
