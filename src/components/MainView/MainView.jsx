@@ -21,7 +21,6 @@ export const MainView = () => {
 
       setOpacity(mainRef.current.scrollTop / (topRef.current.clientHeight * 2))
     }
-
     mainRef.current?.addEventListener('scroll', handleScroll)
 
     return () => refCopy.current?.removeEventListener('scroll', handleScroll)
@@ -32,13 +31,13 @@ export const MainView = () => {
       <Topbar ref={topRef} backgroundOpacity={opacity} />
       <main
         ref={mainRef}
-        className='h-screen py-24 overflow-auto bg-true-gray-500'
+        className='h-screen pb-24 overflow-auto bg-true-gray-500'
       >
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/search' component={Search} />
           <Route path='/library' component={Library} />
-          <Route path='/podcast/:podcastId' component={Podcast} />
+          <Route path='/podcasts/:podcastId' component={Podcast} />
         </Switch>
       </main>
     </div>
