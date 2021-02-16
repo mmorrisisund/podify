@@ -1,8 +1,11 @@
 import { Menu, Transition } from '@headlessui/react'
 
 import { User, ArrowDown, ArrowUp } from '../Icons'
+import { useAuthContext } from '../../context/AuthContext'
 
 export const TopbarMenu = () => {
+  const { logOut } = useAuthContext()
+
   return (
     <Menu as='div' className='pointer-events-auto'>
       {({ open }) => (
@@ -23,23 +26,48 @@ export const TopbarMenu = () => {
           <Transition show={open} className='relative'>
             <Menu.Items
               static
-              className='absolute w-32 px-2 py-4 rounded-sm shadow-md top-2 right-1 bg-true-gray-800 text-true-gray-50 focus:outline-none'
+              className='absolute w-32 p-1 rounded-sm shadow-md top-2 right-1 bg-true-gray-800 text-true-gray-50 focus:outline-none'
             >
               <div>
                 <Menu.Item>
                   {({ active }) => (
-                    <p className='px-2 pb-2 text-gray-300'>Account</p>
+                    <p
+                      className={`p-2 transition-colors ${
+                        active
+                          ? 'text-true-gray-50 bg-true-gray-700'
+                          : 'text-true-gray-300'
+                      } `}
+                    >
+                      Account
+                    </p>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
-                    <p className='px-2 py-2 text-gray-300'>Profile</p>
+                    <p
+                      className={`p-2 transition-colors ${
+                        active
+                          ? 'text-true-gray-50 bg-true-gray-700'
+                          : 'text-true-gray-300'
+                      } `}
+                    >
+                      Profile
+                    </p>
                   )}
                 </Menu.Item>
-                <hr className='border-true-gray-600' />
+                <hr className='mt-1 border-true-gray-600' />
                 <Menu.Item>
                   {({ active }) => (
-                    <p className='px-2 pt-2 text-gray-300 '>Log out</p>
+                    <button
+                      onClick={logOut}
+                      className={`w-full text-left p-2 transition-colors ${
+                        active
+                          ? 'text-true-gray-50 bg-true-gray-700'
+                          : 'text-true-gray-300'
+                      } `}
+                    >
+                      Log out
+                    </button>
                   )}
                 </Menu.Item>
               </div>
