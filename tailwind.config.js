@@ -9,12 +9,13 @@ module.exports = {
       },
       colors: {
         'true-gray': colors.trueGray,
-        'soft-black': '#070707'
+        'soft-black': '#070707',
+        'semi-transparent': 'rgba(0,0,0,0.5)'
       }
     }
   },
   variants: {
     extend: {}
   },
-  plugins: []
+  plugins: [require('@tailwindcss/forms')]
 }
