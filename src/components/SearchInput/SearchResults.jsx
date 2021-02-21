@@ -5,7 +5,7 @@ export const SearchResults = ({ results }) => {
     <div className='absolute w-full py-2 rounded-sm shadow bg-true-gray-900 text-true-gray-400 top-2'>
       <ul className='divide-y divide-black'>
         {results.map(result => (
-          <li>
+          <li key={result.collectionId}>
             <Link
               key={result.collectionId}
               to={`/podcasts/${result.collectionId}`}
