@@ -9,6 +9,7 @@ module.exports = {
       },
       colors: {
         'true-gray': colors.trueGray,
+        lime: colors.lime,
         'soft-black': '#070707',
         'semi-transparent': 'rgba(0,0,0,0.5)'
       }
