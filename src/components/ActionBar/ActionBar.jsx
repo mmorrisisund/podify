@@ -12,11 +12,14 @@ export const ActionBar = ({ onFollow }) => {
   const [{ podcast }, dispatch, actions] = usePlayContext()
 
   useEffect(() => {
-    const paths = location.pathname.split('/')
-    const id = paths[paths.length - 1]
-    const following = user.library.find(podcast => podcast === id) !== undefined
-    setIsFollowing(following)
-  }, [location, user.library])
+    if (user) {
+      const paths = location.pathname.split('/')
+      const id = paths[paths.length - 1]
+      const following =
+        user.library.find(podcast => podcast === id) !== undefined
+      setIsFollowing(following)
+    }
+  }, [location, user])
 
   const handlePlayClick = () => {
     dispatch({ type: actions.QUEUE_PODCAST, payload: podcast.items })
