@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player/file'
 
 import { Progressbar } from './Progressbar'
@@ -12,6 +12,10 @@ export const Player = ({ className, url }) => {
   const [{ played, playedSeconds }, setPlayerState] = useState({ played: 0 })
   const [duration, setDuration] = useState(0)
   const playerRef = useRef()
+
+  useEffect(() => {
+    if (url) setPlaying(true)
+  }, [url])
 
   const handleOnPlay = () => setPlaying(true)
   const handleOnPause = () => setPlaying(false)
