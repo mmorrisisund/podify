@@ -1,26 +1,42 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { PodcastHeader } from '../components/Podcast'
-import { ActionBar } from '../components/Podcast/ActionBar'
+import { ActionBar } from '../components/ActionBar'
 import { EpisodeList } from '../components/Podcast/EpisodeList'
+import { usePlayContext } from '../context/PlayContext'
+import { useAuthContext } from '../context/AuthContext'
 import { getPodcastById } from '../utils/itunesApi'
 
 export const Podcast = () => {
-  const [podcast, setPodcast] = useState(null)
+  const [{ podcast }, dispatch, actions] = usePlayContext()
   const [error, setError] = useState(false)
   const { podcastId } = useParams()
+  const { user, setUser } = useAuthContext()
 
   useEffect(() => {
     const fetchPodcast = async () => {
       try {
         const podcast = await getPodcastById(podcastId)
-        setPodcast(podcast)
+        dispatch({ type: actions.SET_PODCAST, payload: podcast })
       } catch (error) {
         setError(true)
       }
     }
     fetchPodcast()
-  }, [podcastId])
+  }, [podcastId, dispatch, actions.SET_PODCAST])
+
+  const handleOnFollow = () => {
+    const existing = user.library.find(p => p === podcastId)
+
+    if (existing) {
+      setUser({
+        ...user,
+        library: [...user.library.filter(p => p !== podcastId)]
+      })
+    } else {
+      setUser({ ...user, library: [...user.library, podcastId] })
+    }
+  }
 
   return (
     <div className='bg-true-gray-900'>
@@ -33,7 +49,7 @@ export const Podcast = () => {
             artist={podcast.artistName}
           />
         )}
-        <ActionBar />
+        <ActionBar onFollow={handleOnFollow} />
         <EpisodeList episodes={podcast?.items} />
       </div>
     </div>
