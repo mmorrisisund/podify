@@ -7,7 +7,7 @@ import { Home, Search, Library, Podcast } from '../../pages'
 export const MainView = () => {
   const mainRef = useRef()
   const topRef = useRef()
-  const [opacity, setOpacity] = useState(0)
+  const [opacity, setOpacity] = useState(0.6)
 
   useEffect(() => {
     const refCopy = mainRef
@@ -19,7 +19,9 @@ export const MainView = () => {
         return
       }
 
-      setOpacity(mainRef.current.scrollTop / (topRef.current.clientHeight * 2))
+      setOpacity(
+        0.6 + (mainRef.current.scrollTop / topRef.current.clientHeight) * 2
+      )
     }
     mainRef.current?.addEventListener('scroll', handleScroll)
 
@@ -29,10 +31,7 @@ export const MainView = () => {
   return (
     <div className='relative'>
       <Topbar ref={topRef} backgroundOpacity={opacity} />
-      <main
-        ref={mainRef}
-        className='h-screen pb-24 overflow-auto bg-true-gray-500'
-      >
+      <main ref={mainRef} className='h-screen pb-24 overflow-auto'>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/search' component={Search} />
