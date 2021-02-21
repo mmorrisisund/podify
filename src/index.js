@@ -6,13 +6,16 @@ import './index.css'
 import App from './App'
 import { AuthProvider } from './context/AuthContext'
 import { SearchProvider } from './context/SearchContext'
+import { PlayProvider } from './context/PlayContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <AuthProvider>
         <SearchProvider>
-          <App />
+          <PlayProvider>
+            <App />
+          </PlayProvider>
         </SearchProvider>
       </AuthProvider>
     </Router>
