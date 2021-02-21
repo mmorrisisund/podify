@@ -4,7 +4,7 @@ import { User, ArrowDown, ArrowUp } from '../Icons'
 import { useAuthContext } from '../../context/AuthContext'
 
 export const TopbarMenu = () => {
-  const { logOut } = useAuthContext()
+  const { logout, user } = useAuthContext()
 
   return (
     <Menu as='div' className='pointer-events-auto'>
@@ -14,7 +14,7 @@ export const TopbarMenu = () => {
             <div className='flex items-center justify-center rounded-full w-7 h-7 bg-true-gray-700'>
               <User className='w-4 h-4 text-white' />
             </div>
-            <span className='mx-2 font-medium text-white'>Mike</span>
+            <span className='mx-2 font-medium text-white'>{user.username}</span>
             <div className='flex items-center justify-center pr-2 w-7 h-7'>
               {open ? (
                 <ArrowUp className='w-4 h-4 text-white' />
@@ -59,7 +59,7 @@ export const TopbarMenu = () => {
                 <Menu.Item>
                   {({ active }) => (
                     <button
-                      onClick={logOut}
+                      onClick={logout}
                       className={`w-full text-left p-2 transition-colors ${
                         active
                           ? 'text-true-gray-50 bg-true-gray-700'

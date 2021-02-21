@@ -1,16 +1,20 @@
 import { forwardRef } from 'react'
+import { useAuthContext } from '../../context/AuthContext'
+import { TopbarAuthLinks } from './TopbarAuthLinks'
 import { TopbarContent } from './TopbarContent'
 import { TopbarMenu } from './TopbarMenu'
 import { TopbarNav } from './TopbarNav'
 
 export const Topbar = forwardRef(({ backgroundOpacity }, ref) => {
+  const { isLoggedIn } = useAuthContext()
+
   return (
     <header ref={ref} className='absolute z-10 w-full h-16 pointer-events-none'>
       <Underlay opacity={backgroundOpacity} />
       <Overlay>
         <TopbarNav />
         <TopbarContent />
-        <TopbarMenu />
+        {isLoggedIn ? <TopbarMenu /> : <TopbarAuthLinks />}
       </Overlay>
     </header>
   )
