@@ -16,7 +16,10 @@ module.exports = {
     }
   },
   variants: {
-    extend: {}
+    extend: {
+      translate: ['group-hover'],
+      scale: ['active']
+    }
   },
   plugins: [require('@tailwindcss/forms')]
 }
