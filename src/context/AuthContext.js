@@ -1,44 +1,43 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext } from 'react'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(undefined)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useLocalStorage('podify-user', null)
+  const [users, setUsers] = useLocalStorage('podify-all-users', [])
 
-  useEffect(() => {
-    const { hash } = window.location
-    window.location.hash = ''
+  const isLoggedIn = !!user
 
-    const spotifyResult = hash
-      ?.substring(1)
-      ?.split('&')
-      ?.reduce((obj, item) => {
-        const [key, value] = item.split('=')
-        obj[key] = value
-        return obj
-      }, {})
-    const accessToken = spotifyResult?.access_token
-    setAccessToken(accessToken)
+  const login = email => {
+    const userToLogin = users.find(user => email === user.email)
+    setUser(userToLogin)
+    const status = !!userToLogin ? 'success' : 'fail'
+    const message = !!userToLogin ? undefined : 'User not found'
+    return { status, data: { message } }
+  }
+  const logout = () => setUser(null)
 
-    if (accessToken) {
-      fetch('https://api.spotify.com/v1/me', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-        .then(res => res.json())
-        .then(createUser)
-        .then(setUser)
-        .catch(console.error)
+  const signUp = ({ email, username }) => {
+    const existingUser = users.find(user => email === user.email)
+
+    if (existingUser) {
+      return {
+        status: 'fail',
+        data: { message: 'User already exists with this email.' }
+      }
     }
-  }, [])
+    const newUser = { email, username, library: [] }
+    setUsers(prev => [...prev, newUser])
+    setUser(newUser)
 
-  const isLoggedIn = () => accessToken !== undefined
-  const logOut = () => setAccessToken(undefined)
+    return { status: 'success', data: { user } }
+  }
 
   return (
-    <AuthContext.Provider value={{ accessToken, isLoggedIn, logOut, user }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, login, logout, signUp, user, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   )
@@ -50,10 +49,4 @@ export const useAuthContext = () => {
     throw new Error('useAuth must be wrapped in an AuthProvider')
   }
   return context
-}
-
-function createUser (spotifyProfile) {
-  return {
-    displayName: spotifyProfile.display_name
-  }
 }
