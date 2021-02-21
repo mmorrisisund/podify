@@ -23,10 +23,10 @@ function reducer (state, { type, payload }) {
       return { ...state, podcast: payload }
     }
     case actions.QUEUE_ADD: {
-      return addToQueue(state, payload)
+      return addEpisodeToQueue(state, payload)
     }
     case actions.QUEUE_REMOVE: {
-      return removeFromQueue(state, payload)
+      return removeEpisodeFromQueue(state, payload)
     }
     case actions.QUEUE_EMPTY: {
       return { ...state, queue: [] }
@@ -67,7 +67,32 @@ export const usePlayContext = () => {
   return value
 }
 
-function addToQueue (state, episode) {
+// Action Creators
+export const setCurrentPodcast = podcast => ({
+  type: actions.SET_PODCAST,
+  payload: podcast
+})
+export const setCurrentEpisode = episode => ({
+  type: actions.SET_PLAYING,
+  payload: episode
+})
+export const addToQueue = episode => ({
+  type: actions.QUEUE_ADD,
+  payload: episode
+})
+export const removeFromQueue = episode => ({
+  type: actions.QUEUE_REMOVE,
+  payload: episode
+})
+export const clearQueue = () => ({ type: actions.QUEUE_EMPTY })
+export const addPodcastEpisodesToQueue = podcast => ({
+  type: actions.QUEUE_PODCAST,
+  payload: podcast.items
+})
+export const playQueue = () => ({ type: actions.QUEUE_PLAY })
+
+// Helper functions
+function addEpisodeToQueue (state, episode) {
   const { queue } = state
   const existing = queue.find(u => u === episode.enclosure.url)
 
@@ -76,7 +101,7 @@ function addToQueue (state, episode) {
   return { ...state, queue: [...queue, episode] }
 }
 
-function removeFromQueue (state, episode) {
+function removeEpisodeFromQueue (state, episode) {
   const newQueue = state.queue.filter(
     ep => ep.enclosure.url !== episode.enclosure.url
   )
