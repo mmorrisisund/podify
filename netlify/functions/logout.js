@@ -1,4 +1,4 @@
-const { clearCookie } = require('../../src/utils/jwt-helper')
+const { clearCookie } = require('../utils/jwt-helper')
 
 exports.handler = async function () {
   return {

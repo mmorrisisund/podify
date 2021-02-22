@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
-const { createClient } = require('../../src/utils/db-helpers')
-const { createJwtCookie } = require('../../src/utils/jwt-helper')
+const { createClient } = require('../utils/db-helpers')
+const { createJwtCookie } = require('../utils/jwt-helper')
 
 exports.handler = async function (event) {
   const dbClient = createClient()

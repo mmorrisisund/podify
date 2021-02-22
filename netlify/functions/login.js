@@ -5,8 +5,8 @@
 // 5. Create a JWT and serialize as a secure http-only cookie
 // 6. Return the user id and a Set-Cookie header with the JWT cookie
 const bcrypt = require('bcryptjs')
-const { createClient } = require('../../src/utils/db-helpers')
-const { createJwtCookie } = require('../../src/utils/jwt-helper')
+const { createClient } = require('../utils/db-helpers')
+const { createJwtCookie } = require('../utils/jwt-helper')
 
 exports.handler = async function (event) {
   let errorStatusCode = 500
