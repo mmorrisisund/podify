@@ -1,15 +1,15 @@
-import { MongoClient } from 'mongodb'
+const { MongoClient } = require('mongodb')
 
 const dbName = 'podify'
 
-export function createClient () {
+exports.createClient = function () {
   const client = new MongoClient(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
 
-  client.usersCollection = function () {
-    return this.db(dbName).collections('users')
+  client.usersCollection = async function () {
+    return await this.db(dbName).collection('users')
   }
 
   return client

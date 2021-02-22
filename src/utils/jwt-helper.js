@@ -1,11 +1,11 @@
-import cookie from 'cookie'
-import jwt from 'jsonwebtoken'
+const cookie = require('cookie')
+const jwt = require('jsonwebtoken')
 
 /*
  * Generate a JWT with the user ID and email as the payload,
  * then serialize to a secure HTTP-only cookie.
  */
-export function createJwtCookie (userId, email) {
+exports.createJwtCookie = function (userId, email) {
   const secretKey =
     '-----BEGIN RSA PRIVATE KEY-----\n' +
     process.env.JWT_SECRET_KEY +
@@ -21,4 +21,8 @@ export function createJwtCookie (userId, email) {
   })
 
   return jwtCookie
+}
+
+exports.clearCookie = function () {
+  return 'jwt=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
 }
