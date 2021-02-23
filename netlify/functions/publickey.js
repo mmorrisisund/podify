@@ -12,8 +12,8 @@ ryJt4GQ/fMupevtcLxCXO8sNO/zrrN+mFClnKdGt3OpXeFBNvmOQKM8w43T0dZX0
 ZXoWQTWfNvxZS2EKOKUl9q2X01MV8qXmvSKVWctRALeJgTEluwTjnXI3t9+vD7F+
 MR8uhcVfc4o96ldhdLbahTMCAwEAAQ==
 -----END PUBLIC KEY-----`
-
-async function handler () {
+exports.publicKey = publicKey
+exports.handler = async function () {
   return {
     statusCode: 200,
     headers: {
@@ -22,5 +22,3 @@ async function handler () {
     body: publicKey
   }
 }
-
-module.exports = { publicKey, handler }
