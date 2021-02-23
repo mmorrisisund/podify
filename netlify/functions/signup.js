@@ -10,7 +10,7 @@ exports.handler = async function (event) {
     await dbClient.connect()
     const users = await dbClient.usersCollection()
 
-    const { email, password } = JSON.parse(event.body)
+    const { email, password, username } = JSON.parse(event.body)
 
     const existingUser = await users.findOne({ email })
     if (existingUser) {
@@ -22,7 +22,8 @@ exports.handler = async function (event) {
 
     const { insertedId } = await users.insertOne({
       email,
-      password: passwordHash
+      password: passwordHash,
+      username
     })
 
     return {
