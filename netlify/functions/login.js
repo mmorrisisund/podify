@@ -1,9 +1,3 @@
-// 1. Connect to the database and get a reference to the `users` collection
-// 2. Get the email and password from the request body
-// 3. Check to see if the user exists, if not return error (401 Unauthorized)
-// 4. Compare the password, if it doesn't match return error (401 Unauthorized)
-// 5. Create a JWT and serialize as a secure http-only cookie
-// 6. Return the user id and a Set-Cookie header with the JWT cookie
 const bcrypt = require('bcryptjs')
 const { createClient } = require('../utils/db-helpers')
 const { createJwtCookie } = require('../utils/jwt-helper')
@@ -36,7 +30,7 @@ exports.handler = async function (event) {
         'Set-Cookie': createJwtCookie(user._id, email),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ userId: user._id })
+      body: JSON.stringify({ userId: user._id, email, username: user.username })
     }
   } catch (error) {
     return {
