@@ -1,22 +1,24 @@
 import { useState } from 'react'
-import { useAuthContext } from '../../context/AuthContext'
+// import { useAuthContext } from '../../context/AuthContext'
+import { useAuth } from '../../providers/auth'
 import { Modal } from './Modal'
 import { SubmitButton, CancelButton } from '../Buttons'
 
 export const SignUpModal = ({ onModalClose }) => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { signup } = useAuth()
   const [error, setError] = useState(null)
-  const { signUp } = useAuthContext()
 
-  const handleFormSubmit = e => {
+  const handleFormSubmit = async e => {
     e.preventDefault()
 
-    const result = signUp({ username, email })
-    if (result.status !== 'success') {
-      setError(result.data.message)
-    } else {
+    try {
+      await signup({ username, email, password })
       onModalClose?.()
+    } catch (error) {
+      setError(error.message)
     }
   }
 
@@ -53,6 +55,19 @@ export const SignUpModal = ({ onModalClose }) => {
                   required
                   value={email}
                   onInput={e => setEmail(e.target.value)}
+                  className='px-4 py-2 mt-4 placeholder-current border rounded-md bg-true-gray-800 text-gray-50'
+                />
+              </div>
+              <div className='flex flex-col'>
+                <label className='capitalize text-true-gray-400'>
+                  password
+                </label>
+                <input
+                  type='password'
+                  placeholder='Enter a password'
+                  required
+                  value={password}
+                  onInput={e => setPassword(e.target.value)}
                   className='px-4 py-2 mt-4 placeholder-current border rounded-md bg-true-gray-800 text-gray-50'
                 />
               </div>

@@ -4,9 +4,9 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import './index.css'
 import App from './App'
-import { AuthProvider } from './context/AuthContext'
 import { SearchProvider } from './context/SearchContext'
 import { PlayProvider } from './context/PlayContext'
+import { AuthProvider } from './providers/auth'
 
 ReactDOM.render(
   <React.StrictMode>

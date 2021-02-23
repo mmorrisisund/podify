@@ -1,10 +1,10 @@
 import { Menu, Transition } from '@headlessui/react'
 
 import { User, ArrowDown, ArrowUp } from '../Icons'
-import { useAuthContext } from '../../context/AuthContext'
+import { useAuth } from '../../providers/auth'
 
 export const TopbarMenu = () => {
-  const { logout, user } = useAuthContext()
+  const { logout, user } = useAuth()
 
   return (
     <Menu as='div' className='pointer-events-auto'>
