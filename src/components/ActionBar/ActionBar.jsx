@@ -1,5 +1,5 @@
 import { FollowButton } from '../Buttons'
-import { useAuthContext } from '../../context/AuthContext'
+import { useAuth } from '../../providers/auth'
 import { PlayButton } from '../Buttons/Play'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { usePlayContext } from '../../context/PlayContext'
 export const ActionBar = ({ onFollow }) => {
   const [isFollowing, setIsFollowing] = useState()
   const location = useLocation()
-  const { user } = useAuthContext()
+  const { user } = useAuth()
   const [{ podcast }, dispatch, actions] = usePlayContext()
 
   useEffect(() => {

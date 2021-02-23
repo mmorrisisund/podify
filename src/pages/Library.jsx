@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { PodcastCard } from '../components/PodcastCard'
-import { useAuthContext } from '../context/AuthContext'
+import { useAuth } from '../providers/auth'
 import { getPodcastById } from '../utils/itunesApi'
 import {
   clearQueue,
@@ -10,7 +10,7 @@ import {
 } from '../context/PlayContext'
 
 export const Library = () => {
-  const { user } = useAuthContext()
+  const { user } = useAuth()
   const [podcasts, setPodcasts] = useState([])
   const [, dispatch] = usePlayContext()
 

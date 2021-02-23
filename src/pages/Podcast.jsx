@@ -4,14 +4,14 @@ import { PodcastHeader } from '../components/Podcast'
 import { ActionBar } from '../components/ActionBar'
 import { EpisodeList } from '../components/Podcast/EpisodeList'
 import { usePlayContext } from '../context/PlayContext'
-import { useAuthContext } from '../context/AuthContext'
+import { useAuth } from '../providers/auth'
 import { getPodcastById } from '../utils/itunesApi'
 
 export const Podcast = () => {
   const [{ podcast }, dispatch, actions] = usePlayContext()
   const [error, setError] = useState(false)
   const { podcastId } = useParams()
-  const { user, setUser } = useAuthContext()
+  const { user, setUser } = useAuth()
 
   useEffect(() => {
     const fetchPodcast = async () => {
