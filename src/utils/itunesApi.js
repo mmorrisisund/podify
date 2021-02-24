@@ -44,6 +44,16 @@ export const searchByTerm = (term, cb) => {
     .catch(console.error)
 }
 
+export const searchByGenre = term => {
+  return fetchJsonp(
+    `${BASE_URL}/search?term=${term}&entity=podcast&attribute=keywordsTerm&limit=5`
+  )
+    .then(getJsonResponse)
+    .then(getFetchResults)
+    .then(processSearchResults)
+    .catch(console.error)
+}
+
 export const getPodcastById = async podcastId => {
   const parser = new Parser()
 
