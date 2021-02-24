@@ -1,8 +1,12 @@
-export const Home = () => (
-  <>
-    <div className='h-96 bg-true-gray-800'>Home 1</div>
-    <div className='h-96 bg-true-gray-800'>Home 2</div>
-    <div className='h-96 bg-true-gray-800'>Home 3</div>
-    <div className='h-96 bg-true-gray-800'>Home 4</div>
-  </>
-)
+import { Category } from '../components/Category'
+
+export const Home = () => {
+  return (
+    <div className='pt-24 bg-true-gray-900'>
+      <Category term='sports' />
+      <Category term='comedy' />
+      <Category term='true crime' />
+      <Category term='politics' />
+    </div>
+  )
+}
