@@ -16,7 +16,7 @@ export const ActionBar = ({ onFollow }) => {
       const paths = location.pathname.split('/')
       const id = paths[paths.length - 1]
       const following =
-        user.library.find(podcast => podcast === id) !== undefined
+        user.library?.find(podcast => podcast === id) !== undefined
       setIsFollowing(following)
     }
   }, [location, user])
