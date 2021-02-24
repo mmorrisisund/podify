@@ -30,7 +30,12 @@ exports.handler = async function (event) {
         'Set-Cookie': createJwtCookie(user._id, email),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ userId: user._id, email, username: user.username })
+      body: JSON.stringify({
+        userId: user._id,
+        email,
+        username: user.username,
+        library: user.library
+      })
     }
   } catch (error) {
     return {

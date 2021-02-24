@@ -23,7 +23,8 @@ exports.handler = async function (event) {
     const { insertedId } = await users.insertOne({
       email,
       password: passwordHash,
-      username
+      username,
+      library: []
     })
 
     return {
@@ -32,7 +33,7 @@ exports.handler = async function (event) {
         'Set-Cookie': createJwtCookie(insertedId, email),
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ id: insertedId, email })
+      body: JSON.stringify({ id: insertedId, email, username })
     }
   } catch (err) {
     return {
