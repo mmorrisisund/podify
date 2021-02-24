@@ -1,11 +1,10 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext } from 'react'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
-  const localUserJson = localStorage.getItem('user')
-  const localUser = localUserJson && JSON.parse(localUserJson)
-  const [user, setUser] = useState(localUser)
+  const [user, setUser] = useLocalStorage('user')
 
   const saveUser = user => {
     setUser(user)
@@ -22,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => sendRequest('logout', undefined, deleteUser)
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, signup, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
@@ -41,7 +40,8 @@ async function sendRequest (endpoint, body, successCallback) {
     method: 'POST',
     headers: {
       Accept: 'application/json'
-    }
+    },
+    credentials: 'include'
   }
 
   if (body) {
