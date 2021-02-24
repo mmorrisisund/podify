@@ -14,8 +14,9 @@ exports.createJwtCookie = function (userId, email) {
     algorithm: 'RS256',
     expiresIn: '100 days'
   })
+
   const jwtCookie = cookie.serialize('jwt', token, {
-    secure: process.env.NETLIFY_DEF !== true,
+    secure: false, // process.env.NETLIFY_DEF !== true,
     httpOnly: true,
     path: '/'
   })
