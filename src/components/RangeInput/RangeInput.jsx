@@ -4,7 +4,7 @@ export const RangeInput = ({
   min = 0,
   max = 100,
   step = 1,
-  value,
+  value = 50,
   displayValue = false,
   onInput,
   className
