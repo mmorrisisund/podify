@@ -5,7 +5,7 @@ import { VolumeIcon } from './VolumeIcon'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export const VolumeControl = ({ onChange, className }) => {
-  const [volume, setVolume] = useLocalStorage('podify-volume')
+  const [volume, setVolume] = useLocalStorage('podify-volume', 0.5)
   const [preMuteVolume, setPreMuteVolume] = useState(0)
 
   useEffect(() => {
