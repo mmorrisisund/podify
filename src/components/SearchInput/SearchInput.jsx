@@ -1,32 +1,12 @@
-import { Search } from '../Icons'
-import { useSearch } from '../../context/SearchContext'
 import { useState } from 'react'
-import { debounce } from '../../utils/debounce'
-import { searchByTerm } from '../../utils/itunesApi.js'
-import { map, pick, pipe, slice } from 'ramda'
-import { SearchResults } from './SearchResults'
+import { Search } from '../Icons'
 
-const searchPodcast = debounce(searchByTerm)
-const getPodcastInfo = pipe(
-  map(pick(['artworkUrl60', 'collectionName', 'collectionId'])),
-  slice(0, 5)
-)
-
-const runSetter = setter => value => setter(value)
-
-export const SearchInput = () => {
+export const SearchInput = ({ onInput, delay = 0 }) => {
   const [term, setTerm] = useState('')
-  const [results, setResults] = useState([])
-  const { setSearch } = useSearch()
 
   const handleOnInput = e => {
-    if (e.target.value) {
-      searchPodcast(e.target.value, pipe(getPodcastInfo, runSetter(setResults)))
-    } else {
-      setResults([])
-    }
     setTerm(e.target.value)
-    setSearch(e.target.value)
+    onInput?.(e.target.value)
   }
 
   return (
@@ -43,12 +23,6 @@ export const SearchInput = () => {
           <Search className='w-6 h-6' />
         </span>
       </div>
-
-      {results.length ? (
-        <div className='relative'>
-          <SearchResults results={results} />{' '}
-        </div>
-      ) : null}
     </div>
   )
 }
