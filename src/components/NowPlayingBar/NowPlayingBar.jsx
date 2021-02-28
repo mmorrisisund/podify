@@ -1,6 +1,6 @@
 import { usePlayContext } from '../../context/PlayContext'
 import { MediaDisplay } from './MediaDisplay'
-import { Player } from './Player'
+import { Player } from '../Player'
 
 export const NowPlayingBar = ({ imageUrl, episode, artist, trackUrl }) => {
   const [{ podcast, currentEpisode }] = usePlayContext()
