@@ -9,20 +9,26 @@ import { SearchProvider } from './context/SearchContext'
 import { PlayProvider } from './context/PlayContext'
 import { AuthProvider } from './providers/auth'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <SearchProvider>
             <PlayProvider>
               <App />
             </PlayProvider>
           </SearchProvider>
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
