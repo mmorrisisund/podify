@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Switch, Route } from 'react-router-dom'
 
 import { Topbar } from '../Topbar'
-import { Home, Search, Library, Podcast } from '../../pages'
+import { Home, Search, Library, Podcast, SpotifyAuth } from '../../pages'
 
 export const MainView = () => {
   const mainRef = useRef()
@@ -37,6 +37,7 @@ export const MainView = () => {
           <Route path='/search' component={Search} />
           <Route path='/library' component={Library} />
           <Route path='/podcasts/:podcastId' component={Podcast} />
+          <Route path='/spotify-auth' component={SpotifyAuth} />
         </Switch>
       </main>
     </div>
