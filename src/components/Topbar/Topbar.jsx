@@ -14,7 +14,7 @@ export const Topbar = forwardRef(({ backgroundOpacity }, ref) => {
       <Overlay>
         <TopbarNav />
         <TopbarContent />
-        {!!user ? <TopbarMenu /> : <TopbarAuthLinks />}
+        {user ? <TopbarMenu /> : <TopbarAuthLinks />}
       </Overlay>
     </header>
   )

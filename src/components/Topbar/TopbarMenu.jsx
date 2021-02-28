@@ -14,7 +14,9 @@ export const TopbarMenu = () => {
             <div className='flex items-center justify-center rounded-full w-7 h-7 bg-true-gray-700'>
               <User className='w-4 h-4 text-white' />
             </div>
-            <span className='mx-2 font-medium text-white'>{user.username}</span>
+            <span className='mx-2 font-medium text-white'>
+              {user?.display_name}
+            </span>
             <div className='flex items-center justify-center pr-2 w-7 h-7'>
               {open ? (
                 <ArrowUp className='w-4 h-4 text-white' />
