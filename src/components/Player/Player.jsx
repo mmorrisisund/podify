@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player/file'
 
 import { Progressbar } from './Progressbar'
 import { Time } from '../Time'
-import { VolumeControl } from './VolumeControl'
+import { VolumeControl } from '../NowPlayingBar/VolumeControl'
 import { PlayerControls } from './PlayerControls'
 
 export const Player = ({ className, url }) => {
@@ -54,6 +54,7 @@ export const Player = ({ className, url }) => {
               onPlay={handleOnPlay}
               onReplay={handleOnReplay}
               onForward={handleOnForward}
+              disabled={!url}
             />
 
             <div className='flex items-center space-x-4'>
