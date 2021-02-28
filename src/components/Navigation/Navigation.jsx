@@ -24,7 +24,6 @@ export const Navigation = ({ className }) => {
             className='flex items-center justify-start px-4 py-2 transition-colors duration-300 group'
             activeClassName='text-gray-100 bg-gray-700 rounded w-full'
             to='/search'
-            exact
           >
             <FiSearch className='w-6 h-6 transition duration-300 group-hover:text-gray-100' />
             <p className='ml-4 font-medium transition duration-300 group-hover:text-gray-100'>
