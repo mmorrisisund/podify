@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { PlayButton } from '../Buttons'
 
-export const PodcastCard = ({ id, image, title, author, onPlay }) => {
+export const PodcastCard = ({ podcast, onPlay }) => {
+  const { id, name, publisher, images } = podcast
+
   const handleOnPlay = e => {
     e.preventDefault()
     onPlay?.(id)
@@ -10,12 +12,16 @@ export const PodcastCard = ({ id, image, title, author, onPlay }) => {
     <div className='relative w-56 m-8 transition-colors duration-300 rounded group bg-true-gray-800 h-72 hover:bg-true-gray-700'>
       <Link to={`/podcasts/${id}`}>
         <div className='flex flex-col p-4'>
-          <img className='w-48 h-48 rounded-lg' src={image} alt={title} />
+          <img
+            className='w-48 h-48 rounded-lg'
+            src={images[1].url}
+            alt={name}
+          />
           <div className='mt-4'>
             <h3 className='text-sm font-semibold tracking-wide truncate text-true-gray-50'>
-              {title}
+              {name}
             </h3>
-            <span className='text-xs text-true-gray-300'>{author}</span>
+            <span className='text-xs text-true-gray-300'>{publisher}</span>
           </div>
         </div>
         <div className='absolute bottom-24 right-8'>
