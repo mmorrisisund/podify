@@ -35,7 +35,7 @@ async function createAccessToken (params) {
   return accessToken
 }
 
-async function getAccessToken () {
+export async function getAccessToken () {
   const tokenSet = JSON.parse(localStorage.getItem('tokenSet'))
 
   if (!tokenSet) return
@@ -83,7 +83,6 @@ export async function beginLogin () {
     'user-read-playback-state',
     'user-modify-playback-state',
     'user-read-currently-playing',
-    'app-remote-control',
     'streaming',
     'user-read-email',
     'user-library-read',
