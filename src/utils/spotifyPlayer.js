@@ -7,7 +7,7 @@ const spotifyFetch = (endpoint, config) =>
 
 export const play = (uri, deviceId) => {
   const params = new URLSearchParams({ device_id: deviceId })
-  spotifyFetch(`/me/player/play?${params}`, {
+  return spotifyFetch(`/me/player/play?${params}`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json'
@@ -18,12 +18,13 @@ export const play = (uri, deviceId) => {
 
 export const pause = deviceId => {
   const params = new URLSearchParams({ device_id: deviceId })
-  spotifyFetch(`/me/player/pause?${params}`, { method: 'PUT' }).catch(
+  return spotifyFetch(`/me/player/pause?${params}`, { method: 'PUT' }).catch(
     console.log
   )
 }
 
-export const getCurrentPlaybackState = () => spotifyFetch('/me/player')
+export const getCurrentPlaybackState = () =>
+  spotifyFetch('/me/player?additional_types=episode')
 
 export const transferPlayback = (deviceId, play = false) =>
   spotifyFetch('https://api.spotify.com/v1/me/player', {
@@ -40,20 +41,20 @@ export const transferPlayback = (deviceId, play = false) =>
 export const getAvailableDevices = () => spotifyFetch('/me/player/devices')
 
 export const getCurrentTrack = () =>
-  spotifyFetch('/me/player/currently-playing')
+  spotifyFetch('/me/player/currently-playing?additional_types=episode')
 
 export const playNextTrack = deviceId =>
-  spotifyFetch(`/me/player/next?device_id=${deviceId}`)
+  spotifyFetch(`/me/player/next?device_id=${deviceId}`, { method: 'POST' })
 
 export const playPreviousTrack = deviceId =>
-  spotifyFetch(`/me/player/previous?device_id=${deviceId}`)
+  spotifyFetch(`/me/player/previous?device_id=${deviceId}`, { method: 'POST' })
 
 export const seekTo = (position, deviceId) => {
   const params = new URLSearchParams({
     position_ms: position,
     device_id: deviceId
   })
-  spotifyFetch(`/me/player/seek?${params}`, { method: 'PUT' })
+  return spotifyFetch(`/me/player/seek?${params}`, { method: 'PUT' })
 }
 
 export const setRepeatMode = (state, deviceId) => {
