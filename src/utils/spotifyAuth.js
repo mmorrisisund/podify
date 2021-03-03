@@ -51,8 +51,12 @@ export async function getAccessToken () {
 
 export async function fetchJson (url, init = {}) {
   const response = await fetch(url, init)
-  const body = await response.json()
 
+  if (response.status === 204) {
+    return
+  }
+
+  const body = await response.json()
   if (!response.ok) {
     throw new ErrorResponse(response, body)
   }
