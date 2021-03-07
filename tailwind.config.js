@@ -11,7 +11,8 @@ module.exports = {
         'true-gray': colors.trueGray,
         lime: colors.lime,
         'soft-black': '#070707',
-        'semi-transparent': 'rgba(0,0,0,0.5)'
+        'semi-transparent': 'rgba(0,0,0,0.5)',
+        'spotify-green': '#1db954'
       }
     }
   },
