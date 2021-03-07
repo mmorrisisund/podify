@@ -53,7 +53,7 @@ export const SpotifyConnectDevice = ({
             device_ids: [device_id]
           })
         })
-        onReady?.(device_id)
+        onReady?.(player)
       })
 
       // Not Ready
