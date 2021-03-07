@@ -14,7 +14,7 @@ export const Progressbar = ({ onProgressChanged }) => {
     valueRef.current = newValue
     setValue(newValue)
   }
-  const handleOnMouseUp = () => onProgressChanged(valueRef.current)
+  const handleOnMouseUp = () => onProgressChanged?.(valueRef.current)
 
   return (
     <div className='flex-1 w-full'>
