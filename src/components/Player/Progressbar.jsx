@@ -1,44 +1,33 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import {
+  SliderInput,
+  SliderTrack,
+  SliderRange,
+  SliderHandle
+} from '@reach/slider'
 
-export const Progressbar = ({ progress, onProgressChanged, className }) => {
-  const [progressValue, setProgressValue] = useState(0)
+export const Progressbar = ({ onProgressChanged }) => {
+  const [value, setValue] = useState(0)
+  const valueRef = useRef(0)
 
-  useEffect(() => {
-    setProgressValue(progress)
-  }, [progress])
-
-  const handleOnInput = e => {
-    setProgressValue(e.target.value)
-    onProgressChanged(e.target.value)
+  const handleOnChange = newValue => {
+    valueRef.current = newValue
+    setValue(newValue)
   }
+  const handleOnMouseUp = () => onProgressChanged(valueRef.current)
 
   return (
-    <div className={className ?? ''}>
-      <div className='relative w-full group'>
-        <div className='absolute w-full h-1 transform -translate-y-1/2 bg-gray-600 top-1/2'>
-          <input
-            type='range'
-            className='absolute w-full transform -translate-y-1/2 opacity-0 cursor-pointer top-1/2'
-            min={0}
-            max={1}
-            step={0.01}
-            value={progressValue}
-            onInput={handleOnInput}
-          />
-        </div>
-        <div
-          className='absolute h-1 transform -translate-y-1/2 bg-gray-200 top-1/2'
-          style={{ width: `${progressValue * 100}%` }}
-        />
-        <div className='w-full transition-opacity opacity-0 group-hover:opacity-100'>
-          <output
-            style={{
-              left: `calc(${progressValue * 100}% - ${progressValue * 12}px)`
-            }}
-            className='absolute w-3 h-3 transform -translate-y-1/2 bg-gray-200 rounded-full pointer-events-none top-1/2'
-          />
-        </div>
-      </div>
+    <div className='flex-1 w-full'>
+      <SliderInput
+        value={value}
+        onChange={handleOnChange}
+        onMouseUp={handleOnMouseUp}
+      >
+        <SliderTrack>
+          <SliderRange />
+          <SliderHandle />
+        </SliderTrack>
+      </SliderInput>
     </div>
   )
 }

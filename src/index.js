@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
+import '@reach/slider/styles.css'
 import './index.css'
 import App from './App'
 import { SearchProvider } from './context/SearchContext'

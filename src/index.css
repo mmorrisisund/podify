@@ -5,4 +5,25 @@ li:hover + li > hr {
   visibility: hidden;
 }
 
+[data-reach-slider-input][data-orientation='horizontal'] {
+  @apply h-4;
+}
+[data-reach-slider-track][data-orientation='horizontal'] {
+  @apply h-1 bg-true-gray-600;
+}
+[data-reach-slider-range][data-orientation='horizontal'] {
+  @apply bg-true-gray-400;
+}
+[data-reach-slider-input][data-orientation='horizontal']:hover
+  [data-reach-slider-range][data-orientation='horizontal'] {
+  @apply bg-spotify-green;
+}
+[data-reach-slider-handle][aria-orientation='horizontal'] {
+  @apply w-3 h-3 opacity-0 bg-true-gray-100 focus:outline-none;
+}
+[data-reach-slider-input][data-orientation='horizontal']:hover
+  [data-reach-slider-handle][aria-orientation='horizontal'] {
+  @apply opacity-100;
+}
+
 @tailwind utilities;
