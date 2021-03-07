@@ -6,7 +6,7 @@ li:hover + li > hr {
 }
 
 [data-reach-slider-input][data-orientation='horizontal'] {
-  @apply h-4;
+  @apply flex items-center w-full h-4 mx-1;
 }
 [data-reach-slider-track][data-orientation='horizontal'] {
   @apply h-1 bg-true-gray-600;
