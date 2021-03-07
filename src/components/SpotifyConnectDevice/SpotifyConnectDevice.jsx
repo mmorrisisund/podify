@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useImportScript } from '../../hooks'
+import { getAccessToken } from '../../utils/spotifyAuth'
 
 export const SpotifyConnectDevice = ({
   deviceName,
@@ -40,7 +41,7 @@ export const SpotifyConnectDevice = ({
 
       // Ready
       player.addListener('ready', async ({ device_id }) => {
-        const accessToken = await player._options.getOAuthToken()
+        const accessToken = await getAccessToken()
 
         await fetch('https://api.spotify.com/v1/me/player', {
           method: 'PUT',
