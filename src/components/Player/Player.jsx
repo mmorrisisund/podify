@@ -8,11 +8,15 @@ import { SpotifyConnectDevice } from '../SpotifyConnectDevice'
 import { getAccessToken } from '../../utils'
 
 export const Player = () => {
+  const [player, setPlayer] = useState()
+  const [spotifyState, setSpotifyState] = useState()
+
   const getOAuthToken = async cb => {
     getAccessToken()
       .then(cb)
       .catch(() => cb(''))
   }
+
   return (
     <div id='container' className={`h-full`}>
       <div className='w-full h-full'>
@@ -21,14 +25,18 @@ export const Player = () => {
             <SpotifyConnectDevice
               deviceName='podify'
               getOAuthToken={getOAuthToken}
+              onPlayerStateChanged={setSpotifyState}
+              onReady={setPlayer}
             />
             <PlayerControls
-            // playing={playing}
-            // onPause={handleOnPause}
-            // onPlay={handleOnPlay}
-            // onReplay={handleOnReplay}
-            // onForward={handleOnForward}
-            // disabled={!url}
+              playing={!spotifyState?.paused}
+              onPause={() => player?.pause()}
+              onPlay={() => player?.resume()}
+              onReplay={() => player.seek(spotifyState.position - 15_000)}
+              onForward={() => player.seek(spotifyState.position + 15_000)}
+              onSkipPrevious={() => player.previousTrack()}
+              onSkipNext={() => player.nextTrack()}
+              disabled={!spotifyState}
             />
 
             <div className='flex items-center space-x-4'>
