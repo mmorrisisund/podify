@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { Progressbar } from './Progressbar'
-import { Time } from '../Time'
 import { VolumeControl } from '../NowPlayingBar/VolumeControl'
 import { PlayerControls } from './PlayerControls'
 import { SpotifyConnectDevice } from '../SpotifyConnectDevice'
@@ -39,14 +38,15 @@ export const Player = () => {
               disabled={!spotifyState}
             />
 
-            <div className='flex items-center space-x-4'>
-              <Time seconds={0} className='text-xl text-gray-200' />
+            <div className='flex items-center w-full space-x-4'>
               <Progressbar
                 className='w-full'
-                // progress={played}
-                // onProgressChanged={handleOnProgressChanged}
+                progress={spotifyState?.position}
+                duration={spotifyState?.duration}
+                onProgressChanged={percent =>
+                  player.seek(spotifyState.duration * percent)
+                }
               />
-              <Time seconds={0} className='text-xl text-gray-200' />
             </div>
           </div>
 
