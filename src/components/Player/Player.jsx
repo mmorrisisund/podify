@@ -20,7 +20,7 @@ export const Player = () => {
     <div id='container' className={`h-full`}>
       <div className='w-full h-full'>
         <div className='flex items-center h-full'>
-          <div className='flex flex-col justify-center w-2/3 h-full'>
+          <div className='flex flex-col w-2/3 h-full justify-evenly'>
             <SpotifyConnectDevice
               deviceName='podify'
               getOAuthToken={getOAuthToken}
@@ -50,10 +50,9 @@ export const Player = () => {
             </div>
           </div>
 
-          <VolumeControl
-            className='w-1/3'
-            // onChange={setVolume}
-          />
+          <div className='flex justify-end w-1/3 mr-4'>
+            <VolumeControl onChange={v => player?.setVolume(v + 0.0000001)} />
+          </div>
         </div>
       </div>
     </div>
