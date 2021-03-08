@@ -1,23 +1,22 @@
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
-import { usePlayContext } from '../../context/PlayContext'
 import { PlayButton } from '../Buttons/Play'
-
+import { play } from '../../utils/spotifyPlayer'
 const toMinutes = ms => Math.ceil(ms / 1000 / 60)
 
 export const EpisodeCard = ({ episode }) => {
-  const [, dispatch, actions] = usePlayContext()
   const {
     description,
     duration_ms,
     images: [, md],
     name,
-    release_date
+    release_date,
+    uri
   } = episode
 
   const handleOnClickPlay = e => {
     e.preventDefault()
-    dispatch({ type: actions.SET_PLAYING, payload: episode })
+    play(uri)
   }
 
   return (
