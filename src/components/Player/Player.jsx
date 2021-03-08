@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { Progressbar } from './Progressbar'
 import { VolumeControl } from '../NowPlayingBar/VolumeControl'
@@ -6,7 +6,7 @@ import { PlayerControls } from './PlayerControls'
 import { SpotifyConnectDevice } from '../SpotifyConnectDevice'
 import { getAccessToken } from '../../utils'
 
-export const Player = () => {
+export const Player = ({ onStateChanged }) => {
   const [player, setPlayer] = useState()
   const [spotifyState, setSpotifyState] = useState()
 
@@ -14,6 +14,10 @@ export const Player = () => {
     getAccessToken()
       .then(cb)
       .catch(() => cb(''))
+  }
+  const handleOnPlayerStateChanged = state => {
+    setSpotifyState(state)
+    onStateChanged(state)
   }
 
   return (
@@ -24,9 +28,10 @@ export const Player = () => {
             <SpotifyConnectDevice
               deviceName='podify'
               getOAuthToken={getOAuthToken}
-              onPlayerStateChanged={setSpotifyState}
+              onPlayerStateChanged={handleOnPlayerStateChanged}
               onReady={setPlayer}
             />
+
             <PlayerControls
               playing={!spotifyState?.paused}
               onPause={() => player?.pause()}
