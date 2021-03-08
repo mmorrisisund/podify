@@ -7,9 +7,10 @@ import {
 } from '@reach/slider'
 
 import { VolumeIcon } from './VolumeIcon'
+import { useLocalStorage } from '../../hooks'
 
-export const VolumeControl = ({ value = 0, onChange }) => {
-  const [volume, setVolume] = useState(value)
+export const VolumeControl = ({ value = 0.5, onChange }) => {
+  const [volume, setVolume] = useLocalStorage('volume', value)
   const [preMuteVolume, setPreMuteVolume] = useState(0)
 
   useEffect(() => {
