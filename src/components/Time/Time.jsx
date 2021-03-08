@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 
-export const Time = ({ seconds, ...props }) => {
+export const Time = ({ time = 0, ...props }) => {
+  const seconds = time / 1000
   const [secondsLeft, setSecondsLeft] = useState(0)
   const [minutesLeft, setMinutesLeft] = useState(0)
   const [hoursLeft, setHoursLeft] = useState(0)
