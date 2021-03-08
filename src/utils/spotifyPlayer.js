@@ -5,14 +5,13 @@ const BASE_URL = 'https://api.spotify.com/v1'
 const spotifyFetch = (endpoint, config) =>
   fetchWithToken(`${BASE_URL}${endpoint}`, config)
 
-export const play = (uri, deviceId) => {
-  const params = new URLSearchParams({ device_id: deviceId })
-  return spotifyFetch(`/me/player/play?${params}`, {
+export const play = uri => {
+  return spotifyFetch(`/me/player/play`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json'
     },
-    body: JSON.stringify({ uris: ['spotify:episode:2zolkkVtLB0KerUiNmm2Zf'] })
+    body: JSON.stringify({ uris: [uri] })
   })
 }
 
