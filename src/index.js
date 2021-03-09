@@ -6,8 +6,6 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import '@reach/slider/styles.css'
 import './index.css'
 import App from './App'
-import { SearchProvider } from './context/SearchContext'
-import { PlayProvider } from './context/PlayContext'
 import { AuthProvider } from './providers/auth'
 
 const queryClient = new QueryClient({
@@ -23,11 +21,7 @@ ReactDOM.render(
     <Router>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <SearchProvider>
-            <PlayProvider>
-              <App />
-            </PlayProvider>
-          </SearchProvider>
+          <App />
         </AuthProvider>
       </QueryClientProvider>
     </Router>
